@@ -1,12 +1,33 @@
-/tmp
-/out-tsc
+# Build outputs
+/dist
+/out
+/lib
+/coverage
 
+# Node
 /node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/.pnp
-.pnp.js
+pnpm-debug.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
+# Editor & IDE
 .vscode/*
 .idea
+*.swp
+
+# TypeScript
+*.tsbuildinfo
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Misc
+.DS_Store
+*.log
