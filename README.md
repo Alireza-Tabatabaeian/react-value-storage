@@ -129,6 +129,65 @@ const name = getStorageValue(USERNAME) as string
 - The library is **UI-agnostic**: it only manages an in-memory JS object and your React rerenders.
 - No localStorage/sessionStorage usage; SSR-safe by default.
 
+
+## Why
+
+### Why use React Value Storage?
+
+>React already has useState, useReducer, and context — so why another tool?
+
+### This package solves some real developer pains you’ll likely recognize:
+
+#### 1. Batch-friendly updates without fighting React’s re-renders
+
+With multiple related variables, updating them one by one can trigger multiple renders in quick succession.
+
+Sometimes later updates even miss the right state because the component re-rendered too early.
+
+With this package, you can update as many key–paths as you want, and only call updateStorageState() when you’re ready.
+
+👉 Fewer renders, less chance of race-y code, more predictable UI.
+
+
+#### 2. Flexible object storage without rigid type boilerplate
+
+One workaround is to keep “all related stuff” in one big object and update it.
+
+But in TypeScript you’d have to predefine the exact object shape — which gets verbose and noisy.
+
+Here you can use deep keys ("user.profile.name", "items[3].price") without having to define every nested level ahead of time.
+
+👉 TypeScript stays happy, warnings stay quiet, and your code stays clean.
+
+
+#### 3. Global state with zero ceremony
+
+Instead of wiring multiple contexts or reaching for a full-blown state library, you just wrap your app with GlobalStorageContextProvider.
+
+Any component can then call useGlobalStorage() and read/write values by path.
+
+👉 No need for “context per domain” — you get a universal, lightweight global store.
+
+#### 4. SSR-safe & UI-agnostic
+
+Unlike localStorage-based solutions, this store is purely in-memory.
+
+Safe to use in SSR environments (Next.js, Remix, etc.) without guards.
+
+Works anywhere React does.
+
+
+#### 5. Tiny, typed, tree-shakable
+
+No dependencies beyond React.
+
+Under the hood is just a plain JS object with deep get/set helpers.
+
+Tree-shaking works (thanks to proper exports), so you only ship what you use.
+
+
+### ✨ In short: it’s a minimal state helper that makes working with structured data + global context painless, while staying lightweight and React-idiomatic.
+
 ## License
 
 MIT © [Alireza Tabatabaeian](https://github.com/Alireza-Tabatabaeian)
