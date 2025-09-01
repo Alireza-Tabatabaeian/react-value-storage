@@ -1,6 +1,6 @@
 {
   "name": "react-value-storage",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Tiny key-path state helper + optional global context for React apps",
   "keywords": [
     "react",
