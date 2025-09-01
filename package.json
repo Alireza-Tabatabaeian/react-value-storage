@@ -41,8 +41,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --dts --format cjs,esm --clean",
-    "dev": "tsup src/index.ts --dts --format cjs,esm --watch",
+    "build": "tsup",
+    "dev": "tsup --watch",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "prepublishOnly": "npm run build",
     "test": "vitest run",
