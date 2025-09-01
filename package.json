@@ -2,6 +2,23 @@
   "name": "react-value-storage",
   "version": "1.0.0",
   "description": "Tiny key-path state helper + optional global context for React apps",
+  "keywords": [
+    "react",
+    "react-hooks",
+    "react-context",
+    "context",
+    "state",
+    "state-management",
+    "global-state",
+    "store",
+    "storage",
+    "key-value",
+    "keypath",
+    "deep-get",
+    "deep-set",
+    "lightweight",
+    "typescript"
+  ],
   "license": "MIT",
   "author": "Alireza Tabatabaeian <alireza.tabatabaeian@gmail.com>",
   "repository": {
