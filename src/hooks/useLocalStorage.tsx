@@ -12,7 +12,7 @@ export type UseLocalStorageInterface = {
     /** Removes a value by path without forcing a re-render.
      * Pass `forceUpdateState=true` if you want an immediate re-render.
      */
-    deleteStorageValue: (key: string, forceUpdateState?: boolean) => void
+    deleteStorageValue: (key: string, setUndefined?: boolean, forceUpdateState?: boolean) => void
     /** Forces a re-render using an immutable clone of the storage. */
     updateStorageState: () => void
 }
@@ -78,8 +78,8 @@ export const useLocalStorage = (initialValues: KeyValueStore = {}): UseLocalStor
             setKeyValueStorage(keyValueStorage.getClone())
     }
 
-    const deleteStorageValue = (key: string, forceUpdateState: boolean = false) => {
-        keyValueStorage.delValue(key)
+    const deleteStorageValue = (key: string, setUndefined: boolean = false, forceUpdateState: boolean = false) => {
+        keyValueStorage.delValue(key, setUndefined)
         if (forceUpdateState)
             setKeyValueStorage(keyValueStorage.getClone())
     }

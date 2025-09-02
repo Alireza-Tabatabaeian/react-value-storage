@@ -1,5 +1,5 @@
 import {describe, it, expect} from 'vitest'
-import {deepGet, deepSet, parsePath} from 'src/tools'
+import {deepGet, deepRemove, deepSet, parsePath} from 'src/tools'
 
 describe('path handling', () => {
     it('test how path is parsed', () => {
@@ -72,5 +72,34 @@ describe('path handling', () => {
             ]
         }
         expect(deepGet(s,'students.0.hobbies[3].Fun Projects.1')).toBe('react-value-storage')
+    })
+
+    it('check delete function on array when remove', () => {
+        const s: any = {students:[{name: 'Ali'}, {name: 'Sarah'}]}
+        deepRemove(s,'students.0')
+        expect(s.students.length).toBe(1)
+        expect(s.students[0].name).toBe('Sarah')
+    })
+
+    it('check delete function on object when remove', () => {
+        const s: any = {name: 'Ali', age : 25}
+        deepRemove(s,'age')
+        expect('age' in s).toBe(false)
+        expect(s.age).toBe(undefined)
+    })
+
+    it('check delete function on array when set to undefined', () => {
+        const s: any = {students:[{name: 'Ali'}, {name: 'Sarah'}]}
+        deepRemove(s,'students.0', true)
+        expect(s.students.length).toBe(2)
+        expect(s.students[0]).toBe(undefined)
+        expect(s.students[1].name).toBe('Sarah')
+    })
+
+    it('check delete function on object when set to undefined', () => {
+        const s: any = {name: 'Ali', age: 25}
+        deepRemove(s,'age', true)
+        expect('age' in s).toBe(true)
+        expect(s.age).toBe(undefined)
     })
 })

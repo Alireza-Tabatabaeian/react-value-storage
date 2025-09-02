@@ -19,9 +19,13 @@ Peer deps: `react` and `react-dom` (v18+).
 
 ## Quick start
 
+#### > Caution: This package relies on react useState and useContext hooks, so can only be used on client side. (add `'use client'`)
+
 ### Local storage (per component)
 
 ```tsx
+'use client'
+
 import {useLocalStorage} from 'react-value-storage'
 
 function Profile() {
@@ -58,6 +62,8 @@ function Profile() {
 
 ```tsx
 // app root (e.g., App.tsx or Next.js layout.tsx)
+'use client'
+
 import {GlobalStorageContextProvider} from 'react-value-storage'
 
 export default function App({children}) {
@@ -71,6 +77,8 @@ export default function App({children}) {
 
 ```tsx
 // any child
+'use client'
+
 import {useGlobalStorage} from 'react-value-storage'
 
 function AddToCart({productId}: { productId: string }) {
@@ -88,13 +96,13 @@ function AddToCart({productId}: { productId: string }) {
 
 ## API
 
-### `useLocalStorage(initialValues?: KeyValueStore)`
+- ### `useLocalStorage(initialValues?: KeyValueStore)` or `useGlobalStorage(initialValues?: KeyValueStore)`
 
-Returns:
+Both returns:
 
 - `getStorageValue(key: string): unknown`
 - `setStorageValue(key: string, value: unknown, forceUpdateState = false): void`
-- `deleteStorageValue(key: string, forceUpdateState = false): void`
+- `deleteStorageValue(key: string, setUndefined = false, forceUpdateState = false): unknown`
 - `updateStorageState(): void` – forces a rerender using an immutable clone
 
 **Key paths**
@@ -103,6 +111,19 @@ Returns:
 - Array index (dot): `arr.0.name`
 - Array index (bracket): `arr[0].name`
 - Mixture: `arr[0].items.5`
+
+**some notes on API:**
+
+- `getStorageValue` and `setStorageValue` both will throw `KeyFormatException` if empty string passed as path. (`deleteStorageValue` doesn't care about empty path)
+- `getStorageValue` will throw `KeyNotFound` if requested path doesn't exist.
+- `setStorageValue` will throw `RawValueDetected` if requested to write an `object` or `array` in place of a raw value. This happens in order to prevent data loose.
+- `deleteStorageValue` will remove the key, however in case of removing an array item, next item will be replaced if exist so the key might point to new item instead of becoming undefined. The `setUndefined` flag can be set to `true` if you wish that array indexes remain the same.
+So if `deleteStorageValue`called with `setUndefined = true`, the key will exist in path but with `undefined` value. As a result the `array.length` won't change.  
+One more tip about `deleteStorageValue` is that it returns the deleted value, somehow works as `pop()` functionality.
+
+setting or deleting values won't cause component re-render if `forceUpdateState` had been set to `false`, this feature makes it possible to alter data without worrying about render interfere. When it's an appropriate time for re-render `forceUpdateState` can be passed as `true` or `updateStorageState` can be called.
+
+
 
 ### `GlobalStorageContextProvider`
 

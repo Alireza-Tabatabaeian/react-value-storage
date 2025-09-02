@@ -25,9 +25,9 @@ export class RawValueDetected extends Error {
 
 
 interface KeyValueStorageInterface {
-    getValue : (key: string) => unknown
-    setValue : (key: string, value: unknown) => void
-    delValue : (key: string) => void
+    getValue: (key: string) => unknown
+    setValue: (key: string, value: unknown) => void
+    delValue: (key: string) => void
     getClone: () => KeyValueStorage
 }
 
@@ -43,25 +43,25 @@ export class KeyValueStorage implements KeyValueStorageInterface {
      * KeyFormatException throws when the key is emptyString
      * RawValueDetected throws when an object is set to be assigned to a raw value, in this case the value will be lost
      */
-    setValue = (key: string, value: unknown) => {
+    setValue = (key: string, value: unknown): void => {
         if (key.trim() === '') {
             throw new KeyFormatException('Key must be a non-empty string.')
         }
         deepSet(this._storage, key.trim(), value)
     }
 
-    getValue = (key: string) => {
+    getValue = (key: string): unknown => {
         if (key.trim() === '') {
             throw new KeyFormatException('Key must be a non-empty string.')
         }
         return deepGet(this._storage, key.trim())
     }
 
-    delValue = (key: string) => {
+    delValue = (key: string, setUndefined: boolean = false): unknown => {
         if (key.trim() === '') {
             return // don't bother as it's ok if nothing happens
         }
-        deepRemove(this._storage, key.trim())
+        return deepRemove(this._storage, key.trim(), setUndefined)
     }
 
     getClone = () => new KeyValueStorage(deepClone(this._storage))

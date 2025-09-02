@@ -108,16 +108,27 @@ export const deepGet = (obj: KeyValueStore, path: string): unknown => {
     return curr
 }
 
-export const deepRemove = (obj: KeyValueStore, path: string): void => {
+export const deepRemove = (obj: KeyValueStore, path: string, setUndefined: boolean = false): unknown => {
     const keys = parsePath(path)
     let curr: any = obj
     let i = 0
     for (const key of keys) {
-        if (curr == null) return
+        if (curr == null) return undefined
         const isLast = i === keys.length - 1
         if (isLast) {
-            delete curr[key as any]
+            const temp = deepClone(curr[key])
+            if(setUndefined) {
+                curr[key] = undefined
+                return temp
+            }
+            if(Array.isArray(curr)) {
+                curr.splice(key as number,1)
+            } else {
+                delete curr[key as any]
+            }
+            return temp
         }
+        i++
         curr = curr[key]
     }
 }
